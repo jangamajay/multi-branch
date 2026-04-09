@@ -1,0 +1,33 @@
+pipeline {
+agent any
+stages {
+stage('Checkout') {
+steps {
+url:https://github.com/jangamajay/multi-branch.git
+}
+}
+stage('Test') {
+when {
+anyOf {
+branch 'master' branch 'test' }
+}
+steps {
+mvn test
+''' }
+}
+stage('Build') {
+when {
+branch 'master' }
+steps {
+mvn clean package
+''' }
+}
+stage('Deploy') {
+when {
+branch 'master' }
+steps {
+java -jar target/java-sample-21-1.0.0.jar
+''' }
+}
+}
+}
