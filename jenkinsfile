@@ -1,33 +1,43 @@
 pipeline {
-agent any
-stages {
-stage('Checkout') {
-steps {
-git 'https://github.com/jangamajay/multi-branch.git'
-}
-}
-stage('Test') {
-when {
-anyOf {
-branch 'main' branch 'DEV' branch 'QA' }
-}
-steps {
-mvn test
-''' }
-}
-stage('Build') {
-when {
-branch 'main' }
-steps {
-mvn clean package
-''' }
-}
-stage('Deploy') {
-when {
-branch 'main' }
-steps {
-sh 'java -jar target/java-sample-21-1.0.0.jar'
-''' }
-}
-}
+    agent any
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/jangamajay/multi-branch.git'
+            }
+        }
+
+        stage('Test') {
+            when {
+                anyOf {
+                    branch 'DEV'
+                    branch 'QA'
+                    branch 'TESTING'
+                }
+            }
+            steps {
+                sh 'mvn test'
+            }
+        }
+
+        stage('Build') {
+            when {
+                branch 'main'
+            }
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Deploy') {
+            when {
+                branch 'main'
+            }
+            steps {
+                sh 'java -jar target/java-sample-21-1.0.0.jar'
+            }
+        }
+    }
 }
