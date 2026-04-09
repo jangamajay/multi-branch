@@ -3,13 +3,13 @@ agent any
 stages {
 stage('Checkout') {
 steps {
-url:https://github.com/jangamajay/multi-branch.git
+git 'https://github.com/jangamajay/multi-branch.git'
 }
 }
 stage('Test') {
 when {
 anyOf {
-branch 'master' branch 'test' }
+branch 'main' branch 'DEV' branch 'QA' }
 }
 steps {
 mvn test
@@ -17,14 +17,14 @@ mvn test
 }
 stage('Build') {
 when {
-branch 'master' }
+branch 'main' }
 steps {
 mvn clean package
 ''' }
 }
 stage('Deploy') {
 when {
-branch 'master' }
+branch 'main' }
 steps {
 java -jar target/java-sample-21-1.0.0.jar
 ''' }
