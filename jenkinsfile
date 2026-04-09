@@ -5,7 +5,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git 'https://github.com/jangamajay/multi-branch.git'
+                checkout scm
             }
         }
 
@@ -27,7 +27,7 @@ pipeline {
                 branch 'main'
             }
             steps {
-                sh 'mvn clean package'
+                sh 'echo "BUILD STAGE"'
             }
         }
 
@@ -36,7 +36,7 @@ pipeline {
                 branch 'main'
             }
             steps {
-                sh 'java -jar target/java-sample-21-1.0.0.jar'
+                sh 'echo "DEPLOY STAGE"'
             }
         }
     }
